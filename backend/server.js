@@ -6,6 +6,7 @@ dotenv.config();
 
 import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 connectDB();
 // const port = process.env.PORT || 3000;
 // const port = 3000
@@ -23,6 +24,7 @@ app.listen(port,()=>{
 
 app.use('/api/users',userRoutes)
 app.use('/api/uploads', postRoutes)
+app.use('/api/chat',chatRoutes)
 // app.get("/", (req,res)=>{
 //     res.send("API is running...")
 // })
