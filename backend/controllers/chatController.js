@@ -5,34 +5,32 @@ import User from '../model/userModel.js';
 //@route       POST / api/chat/
 //@access      protected
 
-const accessChat = async(req,res)=>{
+const startChat = async(req,res)=>{
     const {userId}=req.body;
      
     if(!userId){
-        console.log("UserId param not sent with request");
+        console.log("Invalid UserId");
         return res.status(400);
     }
 
     //retrieve chat
-    var isChat = await Chat.find({
-        $and:[
-            {users: {$elemMatch: {$eq: req.user._id}}},
-            {users: {$elemMatch: {$eq: userId}}},
-        ],
-    })
+    var existingChat = await Chat.find({
+        isGroupChat:false,
+            users: {$elemMatch: {$eq: req.user._id,$eq: userId}},
+})
     .populate("users", "-password")
-    .populate("latestMessage");
+    // .populate("latestMessage");
 
-    isChat = await User.populate(isChat,{
-        path: "latestMessage.sender",
+    existingChat = await User.populate(existingChat,{
+        path: "users",
         select: "fname lname email",
     });
 
-    if(isChat.length>0){
-        res.send(isChat[0]);
+    if(existingChat.length>0){
+        res.send(existingChat[0]);
     }else{
         var chatData = {
-            chatName: 'sender',
+            // chatName: req.user.fname,
             users: [req.user._id, userId],
         };
     
@@ -57,7 +55,7 @@ const fetchChats = async(req,res)=>{
     try {
         Chat.find({users:{ $elemMatch: { $eq: req.user._id}}})
         .populate("users","-password")
-        .populate("latestMessage")
+        .populate("users")
         .sort({ updatedAt : -1 })
         .then(async(results)=>{
             results = await User.populate(results,{
@@ -71,4 +69,4 @@ const fetchChats = async(req,res)=>{
     }
 }
 
-export {accessChat,fetchChats}
+export {startChat,fetchChats}
