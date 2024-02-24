@@ -12,11 +12,9 @@ const getallMessages = async(req,res)=>{
         .populate("chat");
      res.json(messages);
     } catch (error) {
-        // console.log(error.message)
-        res.status(500);
-         throw new Error(error.message);
+        console.log(error.message)
+        res.status(500).json({message: "Internal server error"})
     }
-    // }
 }
 
 //@description     Create New Message
