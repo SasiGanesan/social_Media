@@ -4,6 +4,10 @@ import Post from '../model/postModel.js';
 import multer from 'multer';
 import path from 'path';
 
+
+// multer middleware to save uploaded files to the ./upload/images directory. 
+//The filenames are constructed based on the original fieldname, a timestamp, and the original file extension
+//diskStorage = localStorage
 const storage = multer.diskStorage({
     destination: './upload/images',
     filename: (req,file,cb)=>{

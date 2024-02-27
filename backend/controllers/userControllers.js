@@ -69,12 +69,17 @@ const registerUser=async(req,res)=>{
 //@access Private
 
 const logoutUser = async(req,res)=>{
+   // Clear the JWT (JSON Web Token) cookie
     res.cookie('jwt','',{
-        httpOnly:true,
-        expires:new Date(0)
+        httpOnly:true, // Make the cookie accessible only through HTTP(S) requests, not client-side JavaScript
+        expires:new Date(0) // Set the expiration date to the past, effectively deleting the cookie
     });
+
+      // Respond with a JSON message indicating successful user logout
     res.status(200).json({message:'User logged out successfully'})
 }
+
+// it clears the JWT cookie associated with the user by setting it to an empty string and making it expire immediately
 
 //@desc   Logout user/ clear cookie
 //@route  GET /api/users/profile
