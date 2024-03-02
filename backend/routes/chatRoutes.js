@@ -1,9 +1,10 @@
 import express from 'express';
 import { startChat, fetchChats } from "../controllers/chatController.js";
 import {protect} from '../middleware/authMiddleware.js';
+import {OneToOneChatValidation} from '../middleware/validationMiddleware.js';
 
 const router = express.Router();
 
-router.route('/').post(protect,startChat);
-router.route('/').get(protect,fetchChats)
+router.post('/',protect,OneToOneChatValidation,startChat);
+router.get('/',protect,fetchChats)
 export default router;

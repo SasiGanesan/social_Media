@@ -1,5 +1,5 @@
 // import express from 'express';
-import User from '../model/userModel.js';
+// import User from '../model/userModel.js';
 import Post from '../model/postModel.js';
 import multer from 'multer';
 import path from 'path';
@@ -34,7 +34,7 @@ const createPost = async(req,res)=>{
                 return res.status (400).json({success:0,message:"Please upload an image" });
             }
             // const user=req.body
-            const { user,caption } = req.body;
+            const { userId,caption } = req.body;
             const imageUrl = `http://localhost:4000/upload/${req.file.filename}`;
             
             const newPost = new Post({

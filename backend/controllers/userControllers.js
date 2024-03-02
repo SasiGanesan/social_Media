@@ -36,33 +36,41 @@ const authUser = async(req,res)=>{
 
 const registerUser=async(req,res)=>{
     const {fname,lname,email,gender,DOB,mobileNo,password,confirmPassword,isAdmin}=req.body;
-        if (password !== confirmPassword) {
-            return res.status(400).json({
-              message: "Password do not match",
-            });
-          }
-        const userExists=await User.findOne({email});
+    // console.log(fname,lname,email,gender,DOB,mobileNo,password,confirmPassword,isAdmin)
+    
 
-        if(userExists){
-           res.status(400).json({message:"User already exists"})
-        }
-        const user = await User.create({
-           fname,lname,email,gender,DOB,mobileNo,password,confirmPassword,isAdmin
+try {
+    if (password !== confirmPassword) {
+        return res.status(400).json({
+          message: "Password do not match",
         });
+      }
+    const userExists=await User.findOne({email});
 
-        if(user){
-           generateToken(res,user._id);
-           res.status(200).json({
-               _id:user._id,
-               fname: user.fname,
-               lname: user.lname,
-               email:user.email,
-               isAdmin:user.isAdmin,
-           })
-        }else{
-           res.status(400).json({message: "Invalid user data"})
-        }
-};
+    if(userExists){
+       res.status(400).json({message:"User already exists"})
+    }
+    const user = await User.create({
+       fname,lname,email,gender,DOB,mobileNo,password,confirmPassword,isAdmin
+    });
+    // console.log(fname,lname,email,gender,DOB,mobileNo,password,confirmPassword,isAdmin)
+    if(user){
+       generateToken(res,user._id);
+       res.status(200).json({
+           _id:user._id,
+           fname: user.fname,
+           lname: user.lname,
+           email:user.email,
+           isAdmin:user.isAdmin,
+       });
+    }else{
+       res.status(400).json({message: "Invalid user data"})
+    }
+} catch (error) {
+    // console.log(error.message)
+    res.status(500).json({message: "Internal server error"})
+}    
+    }
 
 //@desc   Logout user/ clear cookie
 //@route  POST /api/users/logout
@@ -110,7 +118,7 @@ const getUserById=async(req,res)=>{
 const deleteUser = async(req,res)=>{
     try {
         const user = await User.findById(req.params.id);
-        console.log(user)
+        // console.log(user)
         if(user){
             if(user.isAdmin){
                 res.status(400).json({message:'Cannot delete admin user'});    
@@ -149,19 +157,30 @@ const getUsers = async(req,res)=>{
     }
 };
 
-const searchUser=async(req,res)=>{
-    const userId = req.query.id;
-    const {fname} = req.query;
-    try {
-        const users = userId ? {_id: userId} : {fname: {$regex: new RegExp(fname, 'i')}};
-        const user = await User.findOne(users);
-        const response = user ? { fname: user.fname, lname: user.lname  } : 'User not found';
-        res.status(200).json(response);
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).json({error: 'Internal Server Error' })
-    }
-}
+
+    // const userId = req.query.id;
+    const searchUser = async (req, res) => {
+        const { fname } = req.query;
+        // console.log(fname)
+        try {
+            if (!fname) {
+                return res.status(400).json({ error: 'Please provide fname for searching.' });
+            }
+    
+            const users = await User.find({ fname: { $regex: new RegExp(fname, 'i') } });
+    
+            if (users.length > 0) {
+                const response = users.map(user => ({ fname: user.fname, lname: user.lname }));
+                res.status(200).json(response);
+            } else {
+                res.status(404).json({ message: 'No users found with the provided fname.' });
+            }
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    };
+    
 
 
 export {authUser,deleteUser,getUserById,logoutUser,registerUser,getUsers,searchUser}

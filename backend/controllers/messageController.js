@@ -21,7 +21,7 @@ const getallMessages = async(req,res)=>{
 //@route           POST /api/Message/
 //@access          Protected
 const sendMessage = async(req,res)=>{
-    const {content,chatId}=req.body;
+    const {chatId,content}=req.body;
 
     if(!content || !chatId){
         return res.status(400).json({message: "Invalid data"})

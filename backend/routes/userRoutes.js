@@ -1,14 +1,17 @@
 import express from 'express';
-
+import { registerValidation,loginValidation,logoutValidation,searchUserValidation } from '../middleware/validationMiddleware.js';
 const router = express.Router()
 import {authUser,deleteUser,getUserById,logoutUser,registerUser,getUsers,searchUser} from '../controllers/userControllers.js';
 import {protect, admin} from '../middleware/authMiddleware.js';
 
-router.route('/').post(registerUser).get(protect,admin,getUsers);
-router.post('/logout',logoutUser);
-router.post('/login',authUser);
+router.post('/register',registerValidation,registerUser);
+router.get('/search',searchUserValidation,searchUser)
+router.get('/',protect,admin,getUsers);
+router.post('/logout',logoutValidation,logoutUser);
+router.post('/login',loginValidation,authUser);
 router.route('/:id').delete(protect,admin,deleteUser).get(protect,admin,getUserById);
-router.get('/search',searchUser)
+
+
 
 export default router;
 
