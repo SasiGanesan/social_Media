@@ -12,7 +12,7 @@ const getallMessages = async(req,res)=>{
         .populate("chat");
      res.json(messages);
     } catch (error) {
-        console.log(error.message)
+        // console.log(error.message)
         res.status(500).json({message: "Internal server error"})
     }
 }
@@ -21,7 +21,7 @@ const getallMessages = async(req,res)=>{
 //@route           POST /api/Message/
 //@access          Protected
 const sendMessage = async(req,res)=>{
-    const {chatId,content}=req.body;
+    const {content,chatId}=req.body;
 
     if(!content || !chatId){
         return res.status(400).json({message: "Invalid data"})
@@ -46,6 +46,7 @@ const sendMessage = async(req,res)=>{
         await Chat.findByIdAndUpdate(req.body.chatId, {latestMessage: message});
 
         return res.status(200).json(message)
+        console.log(message)
     }catch(error){
         res.status(500).json(error.message)
     }
