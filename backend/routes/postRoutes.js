@@ -5,7 +5,7 @@ import {protect} from '../middleware/authMiddleware.js';
 
 const router = express.Router()
 
-router.post('/upload',postImageValidation,protect,createPost)
+router.post('/upload',postImageValidation,createPost)
 router.get('/:id',getPostByUserId)
 
 export default router;
