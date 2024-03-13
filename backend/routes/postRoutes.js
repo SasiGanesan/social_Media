@@ -1,11 +1,11 @@
 import express from 'express';
 import {postImageValidation} from '../middleware/validationMiddleware.js'
-import { createPost } from "../controllers/postController.js";
+import { createPost ,getPostByUserId} from "../controllers/postController.js";
 import {protect} from '../middleware/authMiddleware.js';
 
 const router = express.Router()
 
-router.post('/upload',postImageValidation,createPost)
-
+router.post('/upload',postImageValidation,protect,createPost)
+router.get('/:id',getPostByUserId)
 
 export default router;

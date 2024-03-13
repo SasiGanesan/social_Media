@@ -53,7 +53,23 @@ const createPost = async(req,res)=>{
     })
 }
 
-export {createPost}
+const getPostByUserId = async (req, res) => {
+ const userId = req.params.id;
+    try {
+        const post = await Post.find({userId});
+        // console.log(post)
+        if (post.length > 0) {
+            return res.status(200).json({ success: 1, post });
+        } else {
+            return res.status(400).json({ success: 0, message: "This user has no posts or is not allowed to see posts" });
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ success: 0, message: "Internal Server Error" });
+    }
+};
+
+export {createPost , getPostByUserId}
 
 
 

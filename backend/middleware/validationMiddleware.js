@@ -92,11 +92,11 @@ const OneToOneChatValidation = async(req,res,next)=>{
 //Post Image
 const postImageValidation = async(req,res,next)=>{
     const imageSchema=Joi.object({
-        // userId: Joi.string().required(),
-        imageUrl: Joi.string().required(),
+        userId: Joi.string(),
+        imageUrl: Joi.string().valid('image/png', 'image/jpeg', 'image/gif'),
         caption:Joi.string().max(200),
     });
-    const {error} = await imageSchema.validate(req.body);
+    const {error} =await imageSchema.validate(req.body);
     if(error){
         return res.status(400).json({
             message: error.message
@@ -104,7 +104,7 @@ const postImageValidation = async(req,res,next)=>{
     }else{
         next();
     }
-}
+};
 
 
 //Post Message
@@ -124,7 +124,7 @@ const messageValidation = async(req,res,next)=>{
 }
 
 
-export {registerValidation,loginValidation,logoutValidation,searchUserValidation,postImageValidation,OneToOneChatValidation,messageValidation}
+export {registerValidation,loginValidation,logoutValidation,searchUserValidation,OneToOneChatValidation,messageValidation,postImageValidation}
 
 
 
