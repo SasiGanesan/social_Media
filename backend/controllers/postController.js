@@ -38,7 +38,7 @@ const createPost = async(req,res)=>{
             const imageUrl = `http://localhost:4000/upload/${req.file.filename}`;
             
             const newPost = new Post({
-                user,
+                userId,
                 imageUrl,
                 caption
             });
