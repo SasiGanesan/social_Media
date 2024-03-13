@@ -92,7 +92,7 @@ const OneToOneChatValidation = async(req,res,next)=>{
 //Post Image
 const postImageValidation = async(req,res,next)=>{
     const imageSchema=Joi.object({
-        userId: Joi.string().required(),
+        // userId: Joi.string().required(),
         imageUrl: Joi.string().uri().required(),
         caption:Joi.string().max(200),
     });

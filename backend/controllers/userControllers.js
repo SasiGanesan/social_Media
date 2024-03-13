@@ -92,18 +92,18 @@ const logoutUser = async(req,res)=>{
 //@route  POST /api/users/check-email
 //@access Public
 
-const checkEmailExist = async(req,res)=>{
-    const {email} = req.body;
+// const checkEmailExist = async(req,res)=>{
+//     const {email} = req.body;
 
-    try {
-        const existingUser = await User.findOne({email});
-        if(existingUser){
-            return res.status(400).json({message: "User already exists using this email"})
-        }
-    } catch (error) {
-        return res.status(500).json({message: "Internal server error"})
-    }
-} 
+//     try {
+//         const existingUser = await User.findOne({email});
+//         if(existingUser){
+//             return res.status(400).json({message: "User already exists using this email"})
+//         }
+//     } catch (error) {
+//         return res.status(500).json({message: "Internal server error"})
+//     }
+// } 
 
 //@desc   Logout user/ clear cookie
 //@route  GET /api/users/profile
@@ -199,4 +199,4 @@ const getUsers = async(req,res)=>{
     
 
 
-export {authUser,deleteUser,getUserById,logoutUser,checkEmailExist,registerUser,getUsers,searchUser}
+export {authUser,deleteUser,getUserById,logoutUser,registerUser,getUsers,searchUser}
