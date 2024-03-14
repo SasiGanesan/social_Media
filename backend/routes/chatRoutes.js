@@ -5,6 +5,6 @@ import {OneToOneChatValidation} from '../middleware/validationMiddleware.js';
 
 const router = express.Router();
 
-router.post('/',protect,OneToOneChatValidation,startChat);
+router.post('/',OneToOneChatValidation,protect,startChat);
 router.get('/',protect,fetchChats)
 export default router;
