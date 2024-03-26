@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 // User register Validation
-
 const registerValidation = async(req,res,next)=>{
     const registerSchema = Joi.object({
         fname: Joi.string().min(4).max(10).required(),
@@ -71,10 +70,7 @@ const searchUserValidation=async(req,res,next)=>{
     }
 }
 
-//Post validation
-
-
-// One to One chat
+// One to One chat validation
 const OneToOneChatValidation = async(req,res,next)=>{
     const chatSchema=Joi.object({
         userId : Joi.string().required(),
@@ -89,7 +85,7 @@ const OneToOneChatValidation = async(req,res,next)=>{
     }
 }
 
-//Post Image
+//Post Image validation
 const postImageValidation = async(req,res,next)=>{
     const imageSchema=Joi.object({
         userId: Joi.string(),
@@ -107,7 +103,7 @@ const postImageValidation = async(req,res,next)=>{
 };
 
 
-//Post Message
+//Post Message validation
 const messageValidation = async(req,res,next)=>{
     const messageSchema=Joi.object({
         chatId : Joi.string().required(),

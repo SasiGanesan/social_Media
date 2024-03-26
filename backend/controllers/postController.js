@@ -1,13 +1,13 @@
-// import express from 'express';
-// import User from '../model/userModel.js';
 import Post from '../model/postModel.js';
 import multer from 'multer';
 import path from 'path';
 
 
-// multer middleware to save uploaded files to the ./upload/images directory. 
-//The filenames are constructed based on the original fieldname, a timestamp, and the original file extension
+//multer middleware to save uploaded files to the ./upload/images directory. 
+//The filenames are constructed based on the original filename, a timestamp, 
+//and the original file extension
 //diskStorage = localStorage
+//cb-callback function
 const storage = multer.diskStorage({
     destination: './upload/images',
     filename: (req,file,cb)=>{
@@ -25,30 +25,30 @@ const upload = multer({
 const createPost = async(req,res)=>{
     upload.single('imageUrl')(req,res,async(err)=>{
         try{
+            // It checks if an error occurred during file upload.
             if(err instanceof multer.MulterError){
-                return res.status(400).json({success:0,message:err.message})
+                return res.status(400).json({message:err.message})
             }else if(err){
-                return res.status(500).json({success:0, message:"Error uploading file"});
+                return res.status(500).json({message:"Error uploading file"});
             }
+            // it checks if the uploaded file (req.file) exists and has a filename
             if(!req.file || !req.file.filename){
-                return res.status (400).json({success:0,message:"Please upload an image" });
+                return res.status (400).json({message:"Please upload an image" });
             }
             // const user=req.body
             const { userId,caption } = req.body;
-            const imageUrl = `http://localhost:4000/upload/${req.file.filename}`;
+            const imageUrl = `${req.file.filename}`;
             
-            const newPost = new Post({
+            const newPost = await Post.create({
                 userId,
                 imageUrl,
                 caption
             });
-
-            const savedPost = await newPost.save();
-            res.status(200).json({ success: 1, savedPost });
+            return res.status(200).json(newPost);
 
         }catch(error){
             console.log(error.message);
-            res.status(500).json({ success: 0, message: 'Internal Server Error' });
+            return res.status(500).json({message: 'Internal Server Error' });
         }
     })
 }
@@ -56,16 +56,15 @@ const createPost = async(req,res)=>{
 const getPostByUserId = async (req, res) => {
  const userId = req.params.id;
     try {
+        //
         const post = await Post.find({userId});
-        // console.log(post)
         if (post.length > 0) {
-            return res.status(200).json({ success: 1, post });
+            return res.status(200).json(post);
         } else {
-            return res.status(400).json({ success: 0, message: "This user has no posts or is not allowed to see posts" });
+            return res.status(400).json({message: "This user has no posts or is not allowed to see posts" });
         }
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ success: 0, message: "Internal Server Error" });
+        return res.status(500).json({message: "Internal Server Error" });
     }
 };
 

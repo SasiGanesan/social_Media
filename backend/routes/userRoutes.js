@@ -9,7 +9,7 @@ router.get('/search',searchUserValidation,searchUser)
 router.get('/',protect,admin,getUsers);
 router.post('/logout',logoutValidation,protect,logoutUser);
 router.post('/login',loginValidation,authUser);
-router.route('/:id').delete(protect,admin,deleteUser).get(protect,admin,getUserById);
+router.route('/:id').delete(protect,admin,deleteUser).get(protect,getUserById);
 
 
 

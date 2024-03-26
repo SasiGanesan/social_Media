@@ -5,7 +5,6 @@ const chatSchema=mongoose.Schema({
         type:String,
         trim:true
     },
-    isGroupChat: { type: Boolean, default: false },
     users:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",

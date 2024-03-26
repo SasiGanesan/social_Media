@@ -12,23 +12,22 @@ const startChat = async(req,res)=>{
         console.log("Invalid UserId");
         return res.status(400);
     }
-
     //retrieve chat if it exists for the given users
     var existingChat = await Chat.find({
-        isGroupChat:false,
+        // This is a logical operator that combines multiple conditions using a logical AND operation. 
+        // It's used here to ensure that both conditions within it are met.
+       
         $and: [
             { users: { $elemMatch: { $eq: req.user._id } } },
             { users: { $elemMatch: { $eq: userId } } },
           ],
+        // $elemMatch operator to specify a condition that should be met by at least one element of the users array. 
+        // This condition ensures that the chat involves the currently authenticated user (req.user._id)
     })
-    .populate("users", "-password")
-    .populate("latestMessage");
+    .populate("users", "-password") //populate users from user except password
+    .populate("latestMessage"); //current message is from particular chat
 
-    // existingChat = await User.populate(existingChat,{
-    //     path: "latestMessage.sender",
-    //     select: "fname lname email",
-    // });
-
+    //check the existingChat 
     existingChat = await User.populate(existingChat, {
         path: "latestMessage.sender",
         select: "fname lname email",
@@ -39,11 +38,11 @@ const startChat = async(req,res)=>{
       }else{
         var chatData = {
             chatName: "sender",
-            isGroupChat: false,
             users: [req.user._id, userId],
         };
         
     try{
+        //create a new chatId for new two users
         const createdChat = await Chat.create(chatData);
         const fullChat = await Chat.findOne({_id:createdChat._id}).populate(
             'users',
@@ -53,6 +52,7 @@ const startChat = async(req,res)=>{
     }
     catch(error){
         res.status(400).json(error.message);
+        console.log(error.message)
     }
  }
 }
@@ -60,22 +60,21 @@ const startChat = async(req,res)=>{
 //@description Fetch all chats for a user
 //@route       GET / api/chat/
 //@access      protected
-
 const fetchChats = async(req,res)=>{
     try {
        const results = Chat.find({users:{ $elemMatch: { $eq: req.user._id}}})
         .populate("users","-password")
         .populate("latestMessage")
-        .sort({ updatedAt : -1 })
+        .sort({ updatedAt : -1 })//fetch chat from latest(last) chat
 
           const populatedResults = await User.populate(results,{
                 path: "latestMessage.sender",
                 select: 'fname lname email',
             });
-            res.status(200).send(populatedResults);
+            return res.status(200).send(populatedResults);
         }catch (error) {
             console.log(error.message)
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({message: "Internal Server Error"});
     };
 }
 
