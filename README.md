@@ -23,10 +23,7 @@ This is the backend portion of a full-stack social media website developed using
 
 ## Installation
 
-To run the backend locally, follow these steps:
-
-1. Clone this repository to your local machine.
-2. Install dependencies using npm:
+1. Install dependencies using npm:
 
    ```bash
    npm install
