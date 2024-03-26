@@ -8,7 +8,7 @@ This is the backend portion of a full-stack social media website developed using
 
 - User authentication: Allows users to register, login,and manage their profiles.
 - Profile creation: Users can create, update, logout and delete their profiles.
-- Post management: Users can create,and view posts.
+- Post management: Users can create and view posts.
 - Real-time discussions: Provides functionality for users to engage in real-time discussions through one-to-one chat.
 
 ## Technologies Used
