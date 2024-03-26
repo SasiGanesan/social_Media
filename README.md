@@ -17,6 +17,9 @@ This is the backend portion of a full-stack social media website developed using
 - **Express.js**: A web application framework for Node.js used to build the server-side logic and RESTful APIs.
 - **Node.js**: A JavaScript runtime environment used for executing server-side code.
 - **Mongoose**: An Object Data Modeling (ODM) library for MongoDB and Node.js used to model application data and simplify interactions with MongoDB.
+- **Multer**: Multer is a node.js middleware for handling multipart/form-data , which is primarily used for uploading files.
+- **Nodemon**: nodemon is a tool that helps develop Node.js based applications by automatically restarting the node application when file changes.
+
 
 ## Installation
 
