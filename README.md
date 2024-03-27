@@ -19,7 +19,7 @@ This is the backend portion of a full-stack social media website developed using
 - **Mongoose**: An Object Data Modeling (ODM) library for MongoDB and Node.js used to model application data and simplify interactions with MongoDB.
 - **Multer**: Multer is a node.js middleware for handling multipart/form-data , which is primarily used for uploading files.
 - **Nodemon**: nodemon is a tool that helps develop Node.js based applications by automatically restarting the node application when file changes.
-
+- **Joi** : Joi module is a popular module for data validation. This module validates the data based on schemas.
 
 ## Installation
 
